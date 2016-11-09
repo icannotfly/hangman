@@ -61,7 +61,7 @@ void PrintGuesses(string &ChosenWord, string &CorrectGuesses, string &IncorrectG
 }
 
 //determines if the player's guess was correct or not
-void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuesses, string *IncorrectGuesses)
+void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuesses, string *IncorrectGuesses, string *StatusMessage)
 {
 	//see if we've guessed this letter already
 	if (CorrectGuesses->find(PlayerGuess) != string::npos || IncorrectGuesses->find(PlayerGuess) != string::npos)
@@ -72,15 +72,18 @@ void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuess
 	else if (ChosenWord.find(PlayerGuess) != string::npos)
 	{
 		//letter is in word
-		cout << "Correct! There is a " << PlayerGuess << " in the word." << endl;
+		*StatusMessage = "Correct! There is a ";
 		*CorrectGuesses += PlayerGuess;
 	}
 	else
 	{
 		//letter is not in word
-		cout << "WROOONG" << endl;
+		*StatusMessage = "Nope! There are no ";
 		*IncorrectGuesses += PlayerGuess;
 	}
+
+	*StatusMessage += PlayerGuess;
+	*StatusMessage += " in the word.";
 }
 
 int main()
@@ -109,50 +112,64 @@ int main()
 
 	cout << endl << endl;
 	system("pause");
+
+	bool bPlayAgain = true;
 	
-	//start game
-	GameState = EGameState::InProgress;
-	bool bWonLastGame = false;
-
-	//game loop
-	while (GameState == InProgress)
+	while (bPlayAgain)
 	{
-		system("cls"); //windows-only, sorry;
+		//start game
+		GameState = EGameState::InProgress;
+		bool bWonLastGame = false;
+		string StatusMessage = "";
 
-		//update the player on how they're doing
+		//game loop
+		while (GameState == InProgress)
+		{
+			system("cls"); //windows-only, sorry;
+
+			//update the player on how they're doing
+			DrawHangman(IncorrectGuesses.length());
+			PrintGuesses(ChosenWord, CorrectGuesses, IncorrectGuesses);
+
+			cout << endl <<  StatusMessage << endl << endl;
+
+			//cout << "    ((DEBUG)) word is: " << ChosenWord << endl;
+
+			cout << "Make a guess: ";
+			string PlayerGuess;
+			getline(cin, PlayerGuess);
+
+			HandlePlayerGuess(PlayerGuess[0], ChosenWord, &CorrectGuesses, &IncorrectGuesses, &StatusMessage);
+
+			if (IncorrectGuesses.length() >= MAX_INCORRECT_GUESSES)
+			{
+				GameState = EGameState::Over;
+				bWonLastGame = false;
+			}
+			else if (CorrectGuesses.length() == ChosenWord.length())
+			{
+				GameState = EGameState::Over;
+				bWonLastGame = true;
+			}
+		}
+
+		//draw end screen
+		system("cls");
 		DrawHangman(IncorrectGuesses.length());
-		PrintGuesses(ChosenWord, CorrectGuesses, IncorrectGuesses);
-
-		//cout << "    ((DEBUG)) word is: " << ChosenWord << endl;
-
-		cout << "Make a guess: ";
-		string PlayerGuess;
-		getline(cin, PlayerGuess);
-
-		HandlePlayerGuess(PlayerGuess[0], ChosenWord, &CorrectGuesses, &IncorrectGuesses);
-
-		if (IncorrectGuesses.length() >= MAX_INCORRECT_GUESSES)
+		cout << endl << "Game over: " << (bWonLastGame ? "You won!" : "You lost.") << endl;
+		if (!bWonLastGame)
 		{
-			GameState = EGameState::Over;
-			bWonLastGame = false;
+			cout << "The word was \"" << ChosenWord << "\"." << endl;
 		}
-		else if (CorrectGuesses.length() == ChosenWord.length())
-		{
-			GameState = EGameState::Over;
-			bWonLastGame = true;
-		}
+		cout << endl << endl;
+
+		cout << "Want to try again? ";
+		string PlayAgainInput = "";
+		getline(cin, PlayAgainInput);
+		bPlayAgain = (PlayAgainInput[0] == 'y');		
 	}
 
-	//draw end screen
 	system("cls");
-	DrawHangman(IncorrectGuesses.length());
-	cout << endl << "Game over: " << (bWonLastGame ? "You won!" : "You lost.") << endl;
-	if (!bWonLastGame)
-	{
-		cout << "The word was \"" << ChosenWord << "\"." << endl;
-	}
-
-	cout << "Want to try again? ";
-
-	cout << endl << endl;
+	cout << "Thanks for playing!" << endl << endl;
+	system("pause");
 }
