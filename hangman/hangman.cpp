@@ -2,7 +2,7 @@
 #include <string>
 #include <ctime> //for seeding srand
 
-#define WORDLIST_LENGTH 20
+#define WORDLIST_LENGTH 40
 #define MAX_INCORRECT_GUESSES 6
 
 using namespace std;
@@ -85,18 +85,30 @@ void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuess
 
 int main()
 {
-	cout << "Hangman!" << endl << endl;
+	cout << endl
+		<< "    ==========" << endl
+		<< "     Hangman!" << endl
+		<< "    ==========" << endl << endl;
 
 	EGameState GameState = EGameState::WaitingToStart;
 
-	//20 most common english words over 3 letters long
-	string Worldlist[WORDLIST_LENGTH] = { "time", "year", "people", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week" };
+	//40 most common english nouns over 3 letters long
+	string Worldlist[WORDLIST_LENGTH] = { "time", "year", "people", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "issue", "side", "kind", "head", "house", "service", "friend", "father", "power", "hour", "game", "line", "member", "city", "community", "name", "president", "team" };
+
+	//load notification with title
+	cout << "Loaded default wordlist: " << endl 
+		<< "\"Top 40 Most Common English Nouns Over 3 Letters Long\"." << endl;
 
 	//choose a random word within that list
+	cout << endl << "I'm thinking of a word..." << endl;
 	srand(time(0));
 	string ChosenWord = Worldlist[rand() % int(WORDLIST_LENGTH)];
 	string CorrectGuesses;
 	string IncorrectGuesses;
+	cout << "Okay, I've got it!" << endl;
+
+	cout << endl << endl;
+	system("pause");
 	
 	//start game
 	GameState = EGameState::InProgress;
