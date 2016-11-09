@@ -10,3 +10,4 @@ todo
 * option to use only user's custom wordlist
 * tell the user what wordlists are being used
 * description of each wordlist as its first line
+* add difficulty level based on word length
