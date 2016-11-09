@@ -74,18 +74,18 @@ void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuess
 	else if (ChosenWord.find(PlayerGuess) != string::npos)
 	{
 		//letter is in word
-		*StatusMessage = "Correct! There is a ";
+		*StatusMessage = "Correct! There is a \"";
 		*CorrectGuesses += PlayerGuess;
 	}
 	else
 	{
 		//letter is not in word
-		*StatusMessage = "Nope! There is no ";
+		*StatusMessage = "Nope! There is no \"";
 		*IncorrectGuesses += PlayerGuess;
 	}
 
 	*StatusMessage += PlayerGuess;
-	*StatusMessage += " in the word.";
+	*StatusMessage += "\" in the word.";
 }
 
 int main()
@@ -158,11 +158,7 @@ int main()
 		system("cls");
 		DrawHangman(IncorrectGuesses.length());
 		cout << endl << "Game over: " << (bWonLastGame ? "You won!" : "You lost.") << endl;
-		if (!bWonLastGame)
-		{
-			cout << "The word was \"" << ChosenWord << "\"." << endl;
-		}
-		cout << endl << endl;
+		cout << "The word was \"" << ChosenWord << "\"." << endl << endl << endl;
 
 		cout << "Want to try again? ";
 		string PlayAgainInput = "";
