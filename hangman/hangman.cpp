@@ -131,16 +131,13 @@ int main()
 			//update the player on how they're doing
 			DrawHangman(IncorrectGuesses.length());
 			PrintGuesses(ChosenWord, CorrectGuesses, IncorrectGuesses);
-
 			cout << endl <<  StatusMessage << endl << endl;
 
-			//cout << "    ((DEBUG)) word is: " << ChosenWord << endl;
-
 			cout << "Make a guess: ";
-			string PlayerGuess;
-			getline(cin, PlayerGuess);
-
-			HandlePlayerGuess(PlayerGuess[0], ChosenWord, &CorrectGuesses, &IncorrectGuesses, &StatusMessage);
+			string sPlayerGuess;
+			getline(cin, sPlayerGuess);
+			char PlayerGuess = tolower(sPlayerGuess[0]);
+			HandlePlayerGuess(PlayerGuess, ChosenWord, &CorrectGuesses, &IncorrectGuesses, &StatusMessage);
 
 			if (IncorrectGuesses.length() >= MAX_INCORRECT_GUESSES)
 			{
@@ -160,10 +157,28 @@ int main()
 		cout << endl << "Game over: " << (bWonLastGame ? "You won!" : "You lost.") << endl;
 		cout << "The word was \"" << ChosenWord << "\"." << endl << endl << endl;
 
-		cout << "Want to try again? ";
-		string PlayAgainInput = "";
-		getline(cin, PlayAgainInput);
-		bPlayAgain = (PlayAgainInput[0] == 'y');		
+		bool bTryAgainloop = true;
+		while (bTryAgainloop)
+		{
+			cout << "Want to try again? ";
+			string PlayAgainInput = "";
+			getline(cin, PlayAgainInput);
+			if (tolower(PlayAgainInput[0]) == 'y')
+			{
+				bPlayAgain = true;
+				bTryAgainloop = false;
+			}
+			else if (tolower(PlayAgainInput[0]) == 'n')
+			{
+				bPlayAgain = false;
+				bTryAgainloop = false;
+			}
+			else
+			{
+				bTryAgainloop = true;
+				system("cls");
+			}
+		}
 	}
 
 	system("cls");
