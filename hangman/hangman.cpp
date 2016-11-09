@@ -66,8 +66,10 @@ void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuess
 	//see if we've guessed this letter already
 	if (CorrectGuesses->find(PlayerGuess) != string::npos || IncorrectGuesses->find(PlayerGuess) != string::npos)
 	{
-		cout << "You've already guessed " << PlayerGuess << "!" << endl;
-		cout << "Try again." << endl;
+		*StatusMessage = "You've already guessed ";
+		*StatusMessage += PlayerGuess;
+		*StatusMessage += "; try again.";
+		return;
 	}
 	else if (ChosenWord.find(PlayerGuess) != string::npos)
 	{
@@ -78,7 +80,7 @@ void HandlePlayerGuess(char PlayerGuess, string ChosenWord, string *CorrectGuess
 	else
 	{
 		//letter is not in word
-		*StatusMessage = "Nope! There are no ";
+		*StatusMessage = "Nope! There is no ";
 		*IncorrectGuesses += PlayerGuess;
 	}
 
@@ -102,25 +104,24 @@ int main()
 	cout << "Loaded default wordlist: " << endl 
 		<< "\"Top 40 Most Common English Nouns Over 3 Letters Long\"." << endl;
 
-	//choose a random word within that list
-	cout << endl << "I'm thinking of a word..." << endl;
-	srand(time(0));
-	string ChosenWord = Worldlist[rand() % int(WORDLIST_LENGTH)];
-	string CorrectGuesses;
-	string IncorrectGuesses;
-	cout << "Okay, I've got it!" << endl;
-
-	cout << endl << endl;
-	system("pause");
-
 	bool bPlayAgain = true;
-	
 	while (bPlayAgain)
 	{
 		//start game
 		GameState = EGameState::InProgress;
 		bool bWonLastGame = false;
 		string StatusMessage = "";
+
+		//choose a random word within the list
+		cout << endl << "I'm thinking of a word..." << endl;
+		srand(time(0));
+		string ChosenWord = Worldlist[rand() % int(WORDLIST_LENGTH)];
+		string CorrectGuesses;
+		string IncorrectGuesses;
+		cout << "Okay, I've got it!" << endl;
+
+		cout << endl << endl;
+		system("pause");
 
 		//game loop
 		while (GameState == InProgress)
