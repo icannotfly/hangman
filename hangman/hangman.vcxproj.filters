@@ -22,5 +22,6 @@
   <ItemGroup>
     <None Include="..\README.md" />
     <None Include="default.wordlist" />
+    <None Include="CHANGELOG" />
   </ItemGroup>
 </Project>
