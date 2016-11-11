@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <ctime> //for seeding srand
+#include <vector>
 
 #define WORDLIST_LENGTH 40
 #define MAX_INCORRECT_GUESSES 6
@@ -98,7 +99,7 @@ int main()
 	EGameState GameState = EGameState::WaitingToStart;
 
 	//40 most common english nouns over 3 letters long
-	string Worldlist[WORDLIST_LENGTH] = { "time", "year", "people", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "issue", "side", "kind", "head", "house", "service", "friend", "father", "power", "hour", "game", "line", "member", "city", "community", "name", "president", "team" };
+	vector<string> WordlistDefault = { "time", "year", "people", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "issue", "side", "kind", "head", "house", "service", "friend", "father", "power", "hour", "game", "line", "member", "city", "community", "name", "president", "team" };
 
 	//load notification with title
 	cout << "Loaded default wordlist: " << endl 
@@ -115,7 +116,7 @@ int main()
 		//choose a random word within the list
 		cout << endl << "I'm thinking of a word..." << endl;
 		srand(time(0));
-		string ChosenWord = Worldlist[rand() % int(WORDLIST_LENGTH)];
+		string ChosenWord = WordlistDefault[rand() % int(WORDLIST_LENGTH)];
 		string CorrectGuesses;
 		string IncorrectGuesses;
 		cout << "Okay, I've got it!" << endl;
