@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <ctime> //for seeding srand
 #include <vector>
@@ -98,12 +99,50 @@ int main()
 
 	EGameState GameState = EGameState::WaitingToStart;
 
-	//40 most common english nouns over 3 letters long
-	vector<string> WordlistDefault = { "time", "year", "people", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "issue", "side", "kind", "head", "house", "service", "friend", "father", "power", "hour", "game", "line", "member", "city", "community", "name", "president", "team" };
+	string WordlistName = "";
+	vector<string> WordlistDefault;
+
+	//load default wordlist
+	ifstream infile("default.wordlist");
+	if (!infile)
+	{
+		//try one directory up, just in case we're running from the debug directory
+		infile = ifstream("..\default.wordlist");
+		if (!infile) {
+			system("cls");
+			cerr << "Could not load default wordlist!" << endl << "Ensure that default.wordlist is in the same directory as this program and try again." << endl << endl << endl;
+			system("pause");
+
+			system("cls");
+			cout << "Using a temporary wordlist instead." << endl;
+			WordlistName = "Backup Wordlist";
+			WordlistDefault = { "time", "year", "people", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "issue", "side", "kind", "head", "house", "service", "friend", "father", "power", "hour", "game", "line", "member", "city", "community", "name", "president", "team" };
+		}
+	}
+
+	//parse wordlist
+	while (infile)
+	{
+		string instring = "";
+		getline(infile, instring);
+		
+		//skip comments and newlines
+		if (instring[0] != '#' && !instring.empty())
+		{
+			if (WordlistName == "")
+			{
+				WordlistName = instring;
+			}
+			else
+			{
+				WordlistDefault.push_back(instring);
+			}
+		}
+	}
+	infile.close();
 
 	//load notification with title
-	cout << "Loaded default wordlist: " << endl 
-		<< "\"Top 40 Most Common English Nouns Over 3 Letters Long\"." << endl;
+	cout << "Loaded wordlist \"" << WordlistName << "\", containing " << WordlistDefault.size() << " words." << endl;
 
 	bool bPlayAgain = true;
 	while (bPlayAgain)
