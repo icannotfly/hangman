@@ -1,0 +1,16 @@
+changelog
+=========
+
+v1.1.0
+------
+* added ability to read from a hardcoded external wordlist
+* added default.wordlist file with 100 nouns in it
+* added backup wordlist to read from in case the default wordlist is missing
+
+v1.0.1
+------
+* included some missing dll's so that the program will run on any win32 system
+
+v1.0.0
+------
+* initial release
